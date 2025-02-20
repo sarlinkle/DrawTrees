@@ -4,8 +4,7 @@ const golden_ratio_exp4 = golden_ratio_exp3 * golden_ratio;
 let trees = [];
 
 function setup() {
-  colorMode(HSB);
-  createCanvas(300, 400);
+    createCanvas(300, 400);
 }
 
 function draw() {
@@ -25,18 +24,19 @@ function draw() {
   //for(let i = 0; i < trees.length; i++)
     //let pos = trees[i];
     //circle(pos.x, pos.y, 20);
-    for(const pos of trees){
+    for(const treeInfo of trees){
       
-    let distance = pos.y / height;
+    let distance = treeInfo.y / height;
       distance = distance * distance;
     
     fill(100, 170 * distance, 70);
+    const color = treeInfo.color;
   
-    stroke(40, 100 * distance, 50);
+    stroke(color[0], color[1], color[2], 255);
     
     push();
-    translate(pos.x, pos.y);
-    branch(branch_size * distance, pos.phase);
+    translate(treeInfo.x, treeInfo.y);
+    branch(branch_size * distance, treeInfo.phase);
     pop();
   }
 }
@@ -69,6 +69,7 @@ function branch(branch_size, phase){
 }
 
 function mousePressed(){
-  let pos = {x: mouseX, y: mouseY, phase: random(-PI, PI)};
-  trees.push(pos);
+  const c = [random(0, 255), random(0, 255), random(0, 255)];
+  let treeInfo = {x: mouseX, y: mouseY, phase: random(-PI, PI), color: c};
+  trees.push(treeInfo);
 }
