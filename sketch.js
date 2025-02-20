@@ -5,8 +5,8 @@ let trees = [];
 let backgroundColor;
 
 function setup() {
-  createCanvas(500, 500);
-  generateBackgroundColor(); // Initialize background color using a function
+  createCanvas(windowWidth, windowHeight); // Use full screen size
+  generateBackgroundColor();
 }
 
 function draw() {
@@ -20,8 +20,8 @@ function draw() {
   let strokeWeightValue = goldenRatioExp4 * branchSize;
   strokeWeight(strokeWeightValue);
 
-   // Sort trees by y-position (higher y = closer, should be drawn last)
-   trees.sort((a, b) => a.y - b.y);
+  // Sort trees by y-position (higher y = further away, should be drawn first)
+  trees.sort((a, b) => a.y - b.y);
 
   for (const treeInfo of trees) {
     let distance = treeInfo.y / height;
@@ -68,6 +68,8 @@ function branch(branchSize, phase, leafColor) {
 }
 
 function mousePressed() {
+  if (!fullscreen()) { fullscreen(true); } // Enable fullscreen mode when clicking
+  
   generateBackgroundColor(); // Update background color when clicking
   const color = [random(0, 255), random(0, 255), random(0, 255)];
   const leafColor = [random(50, 200), random(100, 255), random(50, 200)];
@@ -81,6 +83,11 @@ function mousePressed() {
   };
   
   trees.push(treeInfo);
+}
+
+// Adjust canvas size when window resizes
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function generateBackgroundColor() {
